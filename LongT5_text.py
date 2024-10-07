@@ -12,7 +12,7 @@ model = AutoModelForSeq2SeqLM.from_pretrained(model_name)
 def read_pdf(file):
     reader = PyPDF2.PdfReader(file)
     text = ""
-    for page_num in range(reader.numPages):
+    for page_num in range(len(reader.numPages)):
         text += reader.getPage(page_num).extract_text()
     return text
 
