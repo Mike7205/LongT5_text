@@ -1,4 +1,3 @@
-## Model LongT5 do analizy tekstów
 import streamlit as st
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
 import PyPDF2
@@ -12,8 +11,8 @@ model = AutoModelForSeq2SeqLM.from_pretrained(model_name)
 def read_pdf(file):
     reader = PyPDF2.PdfReader(file)
     text = ""
-    for page_num in range(len(reader.numPages)):
-        text += reader.getPage(page_num).extract_text()
+    for page_num in range(len(reader.pages)):  # Zmieniono tutaj
+        text += reader.pages[page_num].extract_text()  # Zmieniono tutaj
     return text
 
 # Interfejs użytkownika Streamlit
