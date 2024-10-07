@@ -33,3 +33,11 @@ if uploaded_files:
             result_file.write(f"Analysis of {uploaded_file.name}:\n{result}\n\n")
 
 st.success("Wyniki analizy zostały zapisane do pliku 'analysis_results.txt'.")
+
+with open("analysis_results.txt", "r", encoding="utf-8") as file:
+        st.download_button(
+            label="Pobierz wyniki analizy",
+            data=file,
+            file_name="analysis_results.txt",
+            mime="text/plain"
+        )
