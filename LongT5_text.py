@@ -1,6 +1,7 @@
 import streamlit as st
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
 import PyPDF2
+import difflib
 
 # Wybierz model LongT5
 model_name = "google/long-t5-tglobal-base"
@@ -14,6 +15,11 @@ def read_pdf(file):
     for page_num in range(len(reader.pages)):
         text += reader.pages[page_num].extract_text()
     return text
+
+# Funkcja do porównywania tekstów
+def compare_texts(text1, text2):
+    diff = difflib.unified_diff(text1.splitlines(), text2.splitlines(), lineterm='')
+    return '\n'.join(diff)
 
 # Interfejs użytkownika Streamlit
 st.title("Porównanie PDF za pomocą LongT5")
@@ -39,9 +45,15 @@ if uploaded_files and len(uploaded_files) == 2:
     st.subheader(f"Wynik analizy dla {file2.name}")
     st.write(result2)
     
+    comparison = compare_texts(result1, result2)
+    
+    st.subheader("Porównanie wyników")
+    st.text(comparison)
+    
     with open("analysis_results.txt", "w", encoding="utf-8") as result_file:
         result_file.write(f"Analysis of {file1.name}:\n{result1}\n\n")
         result_file.write(f"Analysis of {file2.name}:\n{result2}\n\n")
+        result_file.write(f"Comparison:\n{comparison}\n")
     
     st.success("Wyniki analizy zostały zapisane do pliku 'analysis_results.txt'.")
     
