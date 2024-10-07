@@ -10,7 +10,7 @@ model = AutoModelForSeq2SeqLM.from_pretrained(model_name)
 
 # Funkcja do odczytu tekstu z PDF
 def read_pdf(file):
-    reader = PyPDF2.PdfFileReader(file)
+    reader = PyPDF2.PdfReader(file)
     text = ""
     for page_num in range(reader.numPages):
         text += reader.getPage(page_num).extract_text()
